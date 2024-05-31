@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
+<!-- templates/index.html -->
+{% extends 'base.html' %}
 
-<body>
-    <div class="container">
-        s
+{% block title %}Main Page{% endblock %}
+
+{% block content %}
+    <div class="button-container">
+        <button onclick="location.href='/search'">Search</button>
+        <button onclick="location.href='/schedule'">Schedule</button>
     </div>
-</body>
-</html>
+{% endblock %}

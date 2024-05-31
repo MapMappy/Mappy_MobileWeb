@@ -1,0 +1,32 @@
+
+.container {
+    text-align: center;
+}
+
+.logo {
+    max-width: 80%;
+    height: auto;
+}
+
+.button-container {
+    margin-top: 20px;
+}
+
+button {
+    background-color: #4C9D80;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 80%;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
