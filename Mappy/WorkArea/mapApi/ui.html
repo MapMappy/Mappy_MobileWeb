@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Map and Selection Observer</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeiN5jWwQ7x5S2DIUFs1SzNg195qyHN7o&callback=initMap" async defer></script>
+    <style>
+        #map {
+            height: 300px; /* 지도의 높이 설정 */
+            width: 100%; /* 지도의 너비 설정 */
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>Selection Change Observer</h2>
+    <p>Observe the contents of figma.selection change as you change the selection in the file.</p>
+    <p>ID of selection is: </p>
+    <p id="selection">No selection</p>
+    <div id="map"></div> <!-- 지도를 표시할 div -->
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 8
+            });
+        }
+
+        onmessage = (event) => {
+            document.getElementById('selection').innerHTML = event.data.pluginMessage[0] ? event.data.pluginMessage[0].id : 'No selection';
+        }
+    </script>
+</body>
+</html>
