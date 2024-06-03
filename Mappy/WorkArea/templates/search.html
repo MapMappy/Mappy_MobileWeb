@@ -1,11 +1,63 @@
-<!-- templates/index.html -->
 {% extends 'base.html' %}
 
 {% block title %}Search Page{% endblock %}
 
 {% block content %}
-    <div class="button-container">
-        <button onclick="location.href='/search'">Search</button>
-        <button onclick="location.href='/schedule'">Schedule</button>
+<div class="container">
+
+    <h1>경로 추천</h1> 
+    <form method="POST" action="/search">
+        <div class="input-group">
+            <label for="start">출발지</label>
+            <input type="text" id="start" name="start" placeholder="출발지를 입력하세요" required>
+        </div>
+        <div class="input-group">
+            <label for="destination">목적지</label>
+            <input type="text" id="destination" name="destination" placeholder="목적지를 입력하세요" required>
+        </div>
+        <div class="preferences">
+            <h2>우선순위</h2>
+            <label><input type="checkbox" name="priority" value="적은 비용"> 적은 비용</label>
+            <label><input type="checkbox" name="priority" value="빠른 시간"> 빠른 시간</label>
+        </div>
+        <div class="preferences">
+            <h2>이동 인원</h2>
+            <label><input type="checkbox" name="people" value="개인"> 개인</label>
+            <label><input type="checkbox" name="people" value="2~4인"> 2~4인</label>
+            <label><input type="checkbox" name="people" value="단체"> 단체</label>
+        </div>
+        <div class="preferences">
+            <h2>이동수단</h2>
+            <label><input type="checkbox" name="transport" value="도보"> 도보</label>
+            <label><input type="checkbox" name="transport" value="버스"> 버스</label>
+            <label><input type="checkbox" name="transport" value="택시"> 택시</label>
+            <label><input type="checkbox" name="transport" value="지하철"> 지하철</label>
+            <label><input type="checkbox" name="transport" value="따릉이"> 따릉이</label>
+            <label><input type="checkbox" name="transport" value="비행기"> 비행기</label>
+            <label><input type="checkbox" name="transport" value="카쉐어링"> 카쉐어링</label>
+            <label><input type="checkbox" name="transport" value="KTX"> KTX</label>
+            <label><input type="checkbox" name="transport" value="상관없음"> 상관없음</label>
+        </div>
+        <button type="submit">경로 추천</button>
+    </form>
+    {% if result %}
+    <div class="result">
+        <h2>추천 경로:</h2>
+        <p>{{ result }}</p>
     </div>
+    {% endif %}
+    
+<script>
+function setPriority(value) {
+    document.getElementById('priority').value = value;
+}
+
+function setPeople(value) {
+    document.getElementById('people').value = value;
+}
+
+function setTransport(value) {
+    document.getElementById('transport').value = value;
+}
+</script>
 {% endblock %}

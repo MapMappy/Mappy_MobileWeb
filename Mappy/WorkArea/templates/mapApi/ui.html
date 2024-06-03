@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Map and Selection Observer</title>
+    <script>
+        // Flask에서 전달된 API 키를 사용하여 스크립트 태그 생성
+        function loadGoogleMapsApi(apiKey) {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+
+        // Flask 템플릿 엔진을 사용하여 API 키를 삽입
+        document.addEventListener("DOMContentLoaded", function() {
+            const apiKey = "{{ api_key }}";
+            loadGoogleMapsApi(apiKey);
+        });
+    </script>
+    <style>
+        #map {
+            height: 300px; /* 지도의 높이 설정 */
+            width: 100%; /* 지도의 너비 설정 */
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>Selection Change Observer</h2>
+    <p>Observe the contents of figma.selection change as you change the selection in the file.</p>
+    <p>ID of selection is: </p>
+    <p id="selection">No selection</p>
+    <div id="map"></div> <!-- 지도를 표시할 div -->
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 8
+            });
+        }
+
+        onmessage = (event) => {
+            document.getElementById('selection').innerHTML = event.data.pluginMessage[0] ? event.data.pluginMessage[0].id : 'No selection';
+        }
+    </script>
+</body>
+</html>

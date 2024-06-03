@@ -1,3 +1,12 @@
 \.env
 date_dataset.csv
 time_dataset.csv
+
+# Node
+*.log
+*.log.*
+node_modules
+
+out/
+dist/
+code.js
