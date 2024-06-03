@@ -2,7 +2,22 @@
 <html>
 <head>
     <title>Simple Map and Selection Observer</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeiN5jWwQ7x5S2DIUFs1SzNg195qyHN7o&callback=initMap" async defer></script>
+    <script>
+        // Flask에서 전달된 API 키를 사용하여 스크립트 태그 생성
+        function loadGoogleMapsApi(apiKey) {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+
+        // Flask 템플릿 엔진을 사용하여 API 키를 삽입
+        document.addEventListener("DOMContentLoaded", function() {
+            const apiKey = "{{ api_key }}";
+            loadGoogleMapsApi(apiKey);
+        });
+    </script>
     <style>
         #map {
             height: 300px; /* 지도의 높이 설정 */
