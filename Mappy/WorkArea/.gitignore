@@ -1,6 +1,8 @@
 \.env
 date_dataset.csv
 time_dataset.csv
+preproccessed_bus_by_time.csv
+preproccessed_bus_by_date.csv
 
 # Node
 *.log
