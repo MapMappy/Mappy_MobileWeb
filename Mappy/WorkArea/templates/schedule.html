@@ -1,11 +1,47 @@
-<!-- templates/index.html -->
+<!-- templates/schedule.html -->
 {% extends 'base.html' %}
 
 {% block title %}Schedule Page{% endblock %}
 
 {% block content %}
-    <div class="button-container">
-        <button onclick="location.href='/search'">Search</button>
-        <button onclick="location.href='/schedule'">Schedule</button>
+<div class="container">
+    <h1>일정표</h1>
+    <div class="calendar">
+        <div class="header">
+            <h2>Google Calendar Events</h2>
+            <a href="#" class="prev">&lt;</a>
+            <a href="#" class="next">&gt;</a>
+        </div>
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th>Mo</th>
+                    <th>Tu</th>
+                    <th>We</th>
+                    <th>Th</th>
+                    <th>Fr</th>
+                    <th>Sa</th>
+                    <th>Su</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for week in weeks %}
+                <tr>
+                    {% for day in week %}
+                    <td>{{ day if day != 0 else '' }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>      
+        </table>
+        <div class="events">
+            {% for event in events %}
+                <div class="event">
+                    <p>{{ event.start.dateTime if event.start.dateTime else event.start.date }}</p>
+                    <p>{{ event.summary }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+</div>
 {% endblock %}

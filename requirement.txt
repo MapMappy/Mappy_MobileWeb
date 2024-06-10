@@ -2,3 +2,6 @@ flask==2.2.5
 python-dotenv
 requests
 xmltodict
+
+
+pip install python-dotenv google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
