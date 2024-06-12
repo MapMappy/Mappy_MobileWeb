@@ -40,13 +40,24 @@
         </div>
         <button type="submit">경로 추천</button>
     </form>
+    
     {% if result %}
     <div class="result">
         <h2>추천 경로:</h2>
         <p>{{ result }}</p>
+        <!-- Google Maps Directions Embed -->
+        <div style="width: 100%; height: 500px;">
+            <iframe
+                width="100%"
+                height="100%"
+                src="https://www.google.com/maps/embed/v1/directions?key={{ api_key }}&origin={{ start }}&destination={{ destination }}&mode=walking&zoom=13"
+                allowfullscreen>
+            </iframe>
+        </div>
     </div>
     {% endif %}
-    
+</div>
+
 <script>
 function setPriority(value) {
     document.getElementById('priority').value = value;

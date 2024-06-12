@@ -2,3 +2,5 @@ flask==2.2.5
 python-dotenv
 requests
 xmltodict
+googlemaps
+quote
