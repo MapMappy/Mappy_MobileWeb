@@ -1,16 +1,21 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask import redirect, url_for
+
 from dotenv import load_dotenv
 import os
-from flask import redirect, url_for, session
-from dotenv import load_dotenv
-import os
+
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
+
 import datetime
 import requests
 from requests.utils import quote
+
+import pandas as pd
+import datetime
+
+
 
 # .env 파일 로드
 load_dotenv()
@@ -28,6 +33,26 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 # GOOGLE_MAPS_API_KEY 불러오기
 api_key = os.getenv('GOOGLE_MAPS_API_KEY')
 
+
+# Load the CSV file with proper encoding
+df = pd.read_csv("Dataset\subway_dataset.csv", encoding='cp949')
+
+def get_congestion_level(station_name, line_number, direction):
+    now = datetime.datetime.now()
+    current_time_str = now.strftime("%H시%M분")
+    row = df[(df['출발역'] == station_name) & (df['호선'] == line_number) & (df['상하구분'] == direction)]
+    
+    if row.empty:
+        return f"No data found for station: {station_name}, line: {line_number}, direction: {direction}"
+    
+    time_columns = df.columns[6:]
+    closest_time_column = min(time_columns, key=lambda col: abs(datetime.datetime.strptime(col, "%H시%M분") - now))
+    
+    congestion_level = row[closest_time_column].values[0]
+    return congestion_level
+
+
+#위도, 경도 가져오는 함수
 def get_coordinates(address):
     # 주소를 URL로 인코딩
     encoded_address = quote(address)
@@ -172,6 +197,21 @@ def map():
     api_key = os.getenv('GOOGLE_MAPS_API_KEY')
     return render_template('mapApi/ui.html', api_key=api_key, start=start, destination=destination)
 '''
+@app.route('/get_congestion', methods=['POST'])
+def get_congestion():
+    start = request.form['start']
+    end = request.form['end']
+    
+    # Here you need to determine the station_name, line_number, and direction based on the start and end inputs
+    # For now, let's use some placeholder values
+    station_name = "서울역"  # Replace with logic to find the correct station
+    line_number = 1  # Replace with logic to find the correct line number
+    direction = "상선"  # Replace with logic to find the correct direction
+    
+    congestion_level = get_congestion_level(station_name, line_number, direction)
+    
+    return render_template('result.html', congestion_level=congestion_level)
+
 
 
 if __name__ == '__main__':
