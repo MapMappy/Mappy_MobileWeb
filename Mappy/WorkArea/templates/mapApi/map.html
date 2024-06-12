@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
+    <script>
+        function initMap() {
+            const startPoint = { lat: parseFloat("{{ start_lat }}"), lng: parseFloat("{{ start_lng }}") };
+            const endPoint = { lat: parseFloat("{{ end_lat }}"), lng: parseFloat("{{ end_lng }}") };
+
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 7,
+                center: startPoint
+            });
+
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                polylineOptions: {
+                    strokeColor: "red",
+                    strokeWeight: 6,
+                    strokeOpacity: 0.8
+                }
+            });
+
+            directionsService.route(
+                {
+                    origin: startPoint,
+                    destination: endPoint,
+                    travelMode: google.maps.TravelMode.TRANSIT
+                },
+                (response, status) => {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                }
+            );
+        }
+    </script>
+</head>
+<body onload="initMap()">
+    <h1>Directions</h1>
+    <div id="map" style="height: 85vh; width: 100%;"></div>
+</body>
+</html>
