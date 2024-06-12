@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Congestion Level{% endblock %}
+
+{% block content %}
+    <h1>혼잡도 결과</h1>
+    <p>현재 혼잡도: {{ congestion_level }}</p>
+    <a href="{{ url_for('index') }}">뒤로가기</a>
+{% endblock %}
