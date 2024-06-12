@@ -9,6 +9,8 @@ import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import datetime
+import requests
+from requests.utils import quote
 
 # .env 파일 로드
 load_dotenv()
@@ -23,6 +25,22 @@ CREDENTIALS_FILE = 'credentials.json'
 # Set environment variable for OAuth2
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
+# GOOGLE_MAPS_API_KEY 불러오기
+api_key = os.getenv('GOOGLE_MAPS_API_KEY')
+
+def get_coordinates(address):
+    # 주소를 URL로 인코딩
+    encoded_address = quote(address)
+    url = f"https://maps.googleapis.com/maps/api/geocode/json?address={encoded_address}&key={api_key}"
+    response = requests.get(url)
+    data = response.json()
+
+    if data['status'] == 'OK':
+        location = data['results'][0]['geometry']['location']
+        return location['lat'], location['lng']
+    else:
+        print(f"Geocoding error for address '{address}': {data['status']}")
+        return None, None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -104,16 +122,22 @@ def search():
     if request.method == 'POST':
         start = request.form.get('start')
         destination = request.form.get('destination')
+        start_lat, start_lng = get_coordinates(start)
+        end_lat, end_lng = get_coordinates(destination)
 
-        priorities = request.form.getlist('priority')
-        people = request.form.getlist('people')
-        transports = request.form.getlist('transport')
+        if start_lat is None or end_lat is None:
+            return "Error: Could not geocode address."
 
-        result = (f"출발지: {start}, 목적지: {destination}, 우선순위: {', '.join(priorities)}, "
-                  f"이동 인원: {', '.join(people)}, 이동수단: {', '.join(transports)} - 추천 경로")
-
-        return render_template('search.html', result=result)
-    return render_template('search.html')
+        return render_template('mapApi/map.html', 
+                               start=start, 
+                               destination=destination, 
+                               start_lat=start_lat, 
+                               start_lng=start_lng, 
+                               end_lat=end_lat, 
+                               end_lng=end_lng, 
+                               api_key=api_key)
+    else:
+        return render_template('search.html', api_key=api_key)
 
 @app.route('/map', methods=['GET', 'POST'])
 def map():
@@ -149,9 +173,6 @@ def map():
     return render_template('mapApi/ui.html', api_key=api_key, start=start, destination=destination)
 '''
 
-@app.route('/traffic')
-def traffic():
-    return render_template('traffic.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
