@@ -5,9 +5,16 @@
 {% block content %}
     <h1>경로 안내</h1>
     <div id="map-container">
+        <div class="preferences">
+            <div class="transport-options">
+                <label><input type="radio" name="transport" value="DRIVING" checked> 자동차 </label>
+                <label><input type="radio" name="transport" value="WALKING"> 도보 </label>
+                <label><input type="radio" name="transport" value="BICYCLING"> 자전거</label>
+                <label><input type="radio" name="transport" value="TRANSIT"> 대중교통</label>
+            </div>
+        </div>
         <div id="map"></div>
     </div>
-
     <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
     <script>
         function initMap() {
