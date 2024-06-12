@@ -9,16 +9,4 @@
         <button onclick="location.href='/search'">Search</button>
         <button onclick="location.href='/schedule'">Schedule</button>
     </div>
-
-    <h1>경로 추천</h1>
-    <form method="post" action="/map">
-        <label for="start">출발지:</label>
-        <input type="text" id="start" name="start" required placeholder="출발지를 입력하세요">
-        <br>
-        <label for="destination">목적지:</label>
-        <input type="text" id="destination" name="destination" required placeholder="목적지를 입력하세요">
-        <br>
-        <button type="submit">경로 추천</button>
-    </form>
-
 {% endblock %}

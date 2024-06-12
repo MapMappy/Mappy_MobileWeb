@@ -1,0 +1,22 @@
+.container {
+    padding: 80px 20px 20px;
+    max-width: 90%; /* 변경 */
+    margin: 0 auto;
+}
+
+
+
+#map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    width: 40vh;
+    margin: 0 auto;
+}
+
+
+#map {
+    width: 100%;
+    height: 100%;
+}

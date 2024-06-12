@@ -1,7 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Map</title>
+{% extends 'base.html' %}
+
+{% block title %}Map{% endblock %}
+
+{% block content %}
+    <h1>경로 안내</h1>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
     <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
     <script>
         function initMap() {
@@ -39,9 +45,8 @@
             );
         }
     </script>
-</head>
-<body onload="initMap()">
-    <h1>Directions</h1>
-    <div id="map" style="height: 85vh; width: 100%;"></div>
-</body>
-</html>
+    <script>
+        window.onload = initMap;
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}">
+{% endblock %}
