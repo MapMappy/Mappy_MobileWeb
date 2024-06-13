@@ -14,6 +14,10 @@
             </div>
         </div>
         <div id="map"></div>
+        <div id="congestion-level">
+            <h2>혼잡도 결과</h2>
+            <p id="congestion-info">현재 혼잡도: 정보 없음</p>
+        </div>
     </div>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places"></script>
     <script>
@@ -45,14 +49,46 @@
                 (response, status) => {
                     if (status === 'OK') {
                         directionsRenderer.setDirections(response);
+                        if (response && response.routes && response.routes.length > 0) {
+                            extractTransitInfo(response);
+                        } else {
+                            console.log("No transit information found in the response.");
+                        }
                     } else {
                         window.alert('Directions request failed due to ' + status);
                     }
                 }
             );
+
+            // 수정된 부분: extractTransitInfo 함수 호출
+            extractTransitInfo(response);
         }
-    </script>
-    <script>
+
+        function extractTransitInfo(response) {
+            console.log("extractTransitInfo 함수가 실행되었습니다.");
+
+            const legs = response.routes[0].legs;
+            let transitInfoHTML = '<h2>대중교통 정보</h2>';
+            for (let i = 0; i < legs.length; i++) {
+                const steps = legs[i].steps;
+                for (let j = 0; j < steps.length; j++) {
+                    if (steps[j].travel_mode === 'TRANSIT' && steps[j].transit) {
+                        const transitDetails = steps[j].transit;
+                        // 대중교통 정보를 HTML로 추가
+                        transitInfoHTML += `
+                            <p>노선: ${transitDetails.line.short_name}</p>
+                            <p>출발역: ${transitDetails.departure_stop.name}</p>
+                            <p>도착역: ${transitDetails.arrival_stop.name}</p>
+                            <p>출발 시간: ${transitDetails.departure_time.text}</p>
+                            <p>도착 시간: ${transitDetails.arrival_time.text}</p>
+                        `;
+                    }
+                }
+            }
+            // 대중교통 정보를 표시할 공간에 HTML 추가
+            document.getElementById('transit-info').innerHTML = transitInfoHTML;
+        }
+
         window.onload = initMap;
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}">
