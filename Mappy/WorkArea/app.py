@@ -127,9 +127,6 @@ def search():
     else:
         return render_template('search.html', api_key=api_key)
 
-from flask import render_template
-import datetime
-import requests
 
 @app.route('/results', methods=['POST'])
 def get_congestion():
@@ -240,7 +237,7 @@ def map():
     print(f"Priorities: {priorities}, People: {people}, Transports: {transports}")
 
     return render_template('mapApi/ui.html', api_key=api_key, start=start, destination=destination, priorities=priorities, people=people, transports=transports)
-
+'''
 @app.route('/map', methods=['GET'])
 def map():
     start = request.args.get('start')
@@ -250,7 +247,7 @@ def map():
 
     api_key = os.getenv('GOOGLE_MAPS_API_KEY')
     return render_template('mapApi/ui.html', api_key=api_key, start=start, destination=destination)
-'''
+
 '''
 @app.route('/get_congestion', methods=['POST'])
 def get_congestion():
